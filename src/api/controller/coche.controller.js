@@ -1,12 +1,12 @@
-const Estilo = require('../models/estilo.model.js')
+const Coche = require('../models/coche.model.js')
 
 
 // Devuelve todas las actividades
-const getAllEstilos = async (req, res) => {
+const getAllCoches = async (req, res) => {
     try{
         // const allEstilos = await Estilo.find()
         // return res.status(200).json(allEstilos);
-        const numCharacters = await Estilo.countDocuments();
+        const numCharacters = await Coche.countDocuments();
         let { page, limit } = req.query;
         limit = limit ? parseInt(limit) : 3;
         /*if (!isNaN(parseInt(page))) {
@@ -26,11 +26,11 @@ const getAllEstilos = async (req, res) => {
         console.log(numPages, numCharacters);
         const skip = (page - 1) * limit;
         // descarto los elementos que no esten en la pagina indicada
-        const estilos = await Estilo.find().skip(skip).limit(limit);
+        const coches = await Coche.find().skip(skip).limit(limit);
         return res.status(200).json({
-          estilos: estilos,
-          nextPage: numPages >= page + 1 ? `estilos/?page=${page + 1}` : null,
-          prevPage: page === 1 ? null : `estilos/?page=${page - 1}`,
+          coches: coches,
+          nextPage: numPages >= page + 1 ? `coches/?page=${page + 1}` : null,
+          prevPage: page === 1 ? null : `coches/?page=${page - 1}`,
         });
 
 
@@ -41,11 +41,11 @@ const getAllEstilos = async (req, res) => {
 }
 
 // Devuelve una actividad desde su _id por params
-const getEstilosId = async (req, res) => {
+const getCochesId = async (req, res) => {
     try{
         const {id} = req.params; 
-        const getEstiloId = await Estilo.find({_id: id});
-        return res.status(200).json(getEstiloId);
+        const getCocheId = await Coche.findById({_id: id});
+        return res.status(200).json(getCocheId);
         //return res.status(200).json(getEstiloId[0]); esto o finbyid
     }catch(error){
         return res.status(500).json(error);
@@ -54,11 +54,11 @@ const getEstilosId = async (req, res) => {
 }
 
 // Devuelve el precio de actividad desde su nombre por params
-const getEstilosPrice = async (req, res) => {
+const getCochesPrice = async (req, res) => {
     try{
-        const {estiloName} = req.params; 
-        const getEstiloPrice = await Estilo.find({estiloName: estiloName});
-        return res.status(200).json(getEstiloPrice);
+        const {cocheName} = req.params; 
+        const getCochePrice = await Coche.find({cocheName: cocheName});
+        return res.status(200).json(getCochePrice);
     }catch(error){
         return res.status(500).json(error);
     }
@@ -69,50 +69,50 @@ const getEstilosPrice = async (req, res) => {
 
 
 // Crea un nueva actividad en la DB
-const postEstilos = async (req, res) => {
+const postCoches = async (req, res) => {
     try{
-        const newEstilo = new Estilo(req.body);
+        const newCoche = new Coche(req.body);
 
         if(req.file.path){
-            newEstilo.estiloImg = req.file.path;
+            newCoche.cocheImg = req.file.path;
         }
-        const createdEstilo = await newEstilo.save();
-        return res.status(201).json(createdEstilo);
+        const createdCoche = await newCoche.save();
+        return res.status(201).json(createdCoche);
     }catch (error) {
-        return res.status(500).json(error);
+        return res.status(500).json(error)
     }
 }
 
 
 
 // Modifica una actividad desde id por params y datos por el body
-const putEstilos = async (req, res) => {
+const putCoches = async (req, res) => {
     console.log(req.body);
     try{
         const {id} = req.params;
-        const putEstilo = new Estilo(req.body);
-        putEstilo._id = id;
+        const putCoche = new Coche(req.body);
+        putCoche._id = id;
         if(req.file.path){
-            putEstilo.estiloImg = req.file.path;
+            putCoche.cocheImg = req.file.path;
         }
-        const updatedEstilo = await Estilo.findByIdAndUpdate(id, putEstilo, {new: true});
-        if(!updatedEstilo){
-            return res.status(404).json({message: "Estilo no encontrado"})
+        const updatedCoche = await Coche.findByIdAndUpdate(id, putCoche, {new: true});
+        if(!updatedCoche){
+            return res.status(404).json({message: "Coche no encontrado"})
         }
-        return res.status(200).json(updatedEstilo);
+        return res.status(200).json(updatedCoche);
     }catch(error){
         return res.status(500).json(error)
     }
 }
 // Elimina actividades de la base de datos mandando su id por la url
-const deleteEstilos = async (req, res) => {
+const deleteCoches = async (req, res) => {
     try{
         const {id} = req.params;
-        const deletedEstilo = await Estilo.findByIdAndDelete(id);
-        if(!deletedEstilo){
-            return res.status(404).json({message:"Estilo no encontrado"});
+        const deletedCoche = await Coche.findByIdAndDelete(id);
+        if(!deletedCoche){
+            return res.status(404).json({message:"Coche no encontrado"});
         }
-        return res.status(200).json(deletedEstilo);
+        return res.status(200).json(deletedCoche);
     }catch(error){
         return res.status(500).json(error);
     }
@@ -120,12 +120,12 @@ const deleteEstilos = async (req, res) => {
 }
 
 module.exports = {
-    getAllEstilos,
-    getEstilosId,
-    getEstilosPrice,
+    getAllCoches,
+    getCochesId,
+    getCochesPrice,
   
     // -----------------
-    postEstilos, 
-    putEstilos, 
-    deleteEstilos, 
+    postCoches, 
+    putCoches, 
+    deleteCoches, 
     };

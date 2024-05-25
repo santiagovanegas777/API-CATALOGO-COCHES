@@ -15,7 +15,7 @@ cloudinary.config({
 const routerUser = require('./src/api/routes/user.routes.js');
 
 
-const routerEstilos = require('./src/api/routes/estilo.routes.js')
+const routerCoches = require('./src/api/routes/coches.routes.js')
 
 
 const app = express();
@@ -26,7 +26,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/users', routerUser);
-app.use('/estilos', routerEstilos)
+app.use('/coches', routerCoches)
 
 
 
