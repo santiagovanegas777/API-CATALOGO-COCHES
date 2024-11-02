@@ -58,9 +58,7 @@ const getCochesPrice = async (req, res) => {
     try{
         const {cocheName} = req.params; 
         const getCochePrice = await Coche.find({cocheName: cocheName});
-        return res.status(200).json({
-            coches: getCochePrice,
-        });
+        return res.status(200).json(getCochePrice);
     }catch(error){
         return res.status(500).json(error);
     }
